@@ -44,7 +44,7 @@ export default function InputBar({
   };
 
   return (
-    <div className="bg-gradient-to-t from-[#f7f7f8] via-[#f7f7f8] to-transparent dark:from-[#212121] dark:via-[#212121] dark:to-transparent px-4 pb-4 pt-3">
+    <div className="bg-gradient-to-t from-[#f7f7f8] via-[#f7f7f8] to-transparent dark:from-[#212121] dark:via-[#212121] dark:to-transparent px-4 pb-20 md:pb-4 pt-3">
       <div className="max-w-3xl mx-auto">
         <div className="relative flex items-end bg-white dark:bg-[#2f2f2f] rounded-2xl border border-gray-200 dark:border-white/10 focus-within:border-gray-300 dark:focus-within:border-white/20 transition-colors shadow-sm dark:shadow-lg dark:shadow-black/20">
           <textarea

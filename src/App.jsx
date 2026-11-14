@@ -11,7 +11,7 @@ function ProtectedRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f7f7f8] dark:bg-[#212121] flex items-center justify-center">
+      <div className="h-[100dvh] bg-[#f7f7f8] dark:bg-[#212121] flex items-center justify-center">
         <div className="w-6 h-6 border-2 border-gray-200 dark:border-white/10 border-t-amber-500 rounded-full animate-spin" />
       </div>
     );
@@ -26,7 +26,7 @@ function AuthRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f7f7f8] dark:bg-[#212121] flex items-center justify-center">
+      <div className="h-[100dvh] bg-[#f7f7f8] dark:bg-[#212121] flex items-center justify-center">
         <div className="w-6 h-6 border-2 border-gray-200 dark:border-white/10 border-t-amber-500 rounded-full animate-spin" />
       </div>
     );
@@ -64,7 +64,7 @@ export default function App() {
             path="/login"
             element={
               <AuthRoute>
-                <Login />
+                <Login darkMode={darkMode} onToggleDark={() => setDarkMode((d) => !d)} />
               </AuthRoute>
             }
           />
@@ -72,7 +72,7 @@ export default function App() {
             path="/signup"
             element={
               <AuthRoute>
-                <Signup />
+                <Signup darkMode={darkMode} onToggleDark={() => setDarkMode((d) => !d)} />
               </AuthRoute>
             }
           />

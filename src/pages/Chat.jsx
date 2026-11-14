@@ -183,7 +183,7 @@ export default function Chat({ darkMode, onToggleDark }) {
 
   return (
     <>
-      <div className="flex h-screen bg-[#f7f7f8] dark:bg-[#212121] text-gray-900 dark:text-gray-100">
+      <div className="flex h-[100dvh] bg-[#f7f7f8] dark:bg-[#212121] text-gray-900 dark:text-gray-100">
         {sidebarOpen && (
           <div className="fixed inset-0 bg-black/60 z-30 md:hidden backdrop-blur-[2px]" onClick={() => setSidebarOpen(false)} />
         )}
