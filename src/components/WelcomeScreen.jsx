@@ -23,7 +23,7 @@ export default function WelcomeScreen() {
           How can I help you today?
         </h2>
         <p className="text-sm text-gray-400 dark:text-gray-500">
-          Ask me anything — I'm here to help.
+          Ask me anything - I'm here to help.
         </p>
       </div>
     </div>

@@ -63,6 +63,45 @@ function CodeBlock({ language, children }) {
   );
 }
 
+function CopyIcon({ className }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+    </svg>
+  );
+}
+
+function CheckIcon({ className }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+    </svg>
+  );
+}
+
+function MessageActions({ content }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="flex items-center gap-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+      <button
+        onClick={handleCopy}
+        className="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/8 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+        title={copied ? 'Copied!' : 'Copy message'}
+      >
+        {copied ? <CheckIcon className="w-4 h-4 text-green-500" /> : <CopyIcon className="w-4 h-4" />}
+      </button>
+    </div>
+  );
+}
+
 function LumiAvatar() {
   return (
     <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shrink-0 mt-0.5">
@@ -87,7 +126,7 @@ export default function Message({ message, isLast }) {
   const isUser = message.role === 'user';
 
   return (
-    <div className="py-4 animate-fade-in">
+    <div className="group py-4 animate-fade-in">
       <div className="max-w-3xl mx-auto px-4 md:px-8">
         <div className="flex gap-3">
           {isUser ? <UserAvatar /> : <LumiAvatar />}
@@ -102,61 +141,64 @@ export default function Message({ message, isLast }) {
                 {message.content}
               </p>
             ) : (
-              <div className="message-content text-gray-800 dark:text-gray-200 leading-7 text-[15px]">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    code({ inline, className, children, ...props }) {
-                      const match = /language-(\w+)/.exec(className || '');
-                      if (!inline && match) {
-                        return <CodeBlock language={match[1]}>{children}</CodeBlock>;
-                      }
-                      if (!inline) {
-                        return <CodeBlock>{children}</CodeBlock>;
-                      }
-                      return (
-                        <code
-                          className="px-1.5 py-0.5 rounded-md bg-gray-100 dark:bg-white/10 text-[13px] font-mono text-amber-600 dark:text-amber-400"
-                          {...props}
-                        >
-                          {children}
-                        </code>
-                      );
-                    },
-                    p({ children }) {
-                      return <p className="mb-3 last:mb-0">{children}</p>;
-                    },
-                    ul({ children }) {
-                      return <ul className="list-disc pl-5 mb-3 space-y-1">{children}</ul>;
-                    },
-                    ol({ children }) {
-                      return <ol className="list-decimal pl-5 mb-3 space-y-1">{children}</ol>;
-                    },
-                    blockquote({ children }) {
-                      return (
-                        <blockquote className="border-l-2 border-amber-400/50 pl-4 my-3 text-gray-500 dark:text-gray-400 italic">
-                          {children}
-                        </blockquote>
-                      );
-                    },
-                    a({ href, children }) {
-                      return (
-                        <a href={href} target="_blank" rel="noopener noreferrer" className="text-amber-600 dark:text-amber-400 underline decoration-amber-400/30 hover:decoration-amber-400">
-                          {children}
-                        </a>
-                      );
-                    },
-                    strong({ children }) {
-                      return <strong className="font-semibold text-gray-900 dark:text-gray-100">{children}</strong>;
-                    },
-                  }}
-                >
-                  {message.content || ' '}
-                </ReactMarkdown>
-                {isLast && (
-                  <span className="inline-block w-1.5 h-4 bg-amber-500 cursor-blink rounded-sm ml-0.5 align-middle" />
-                )}
-              </div>
+              <>
+                <div className="message-content text-gray-800 dark:text-gray-200 leading-7 text-[15px]">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      code({ inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || '');
+                        if (!inline && match) {
+                          return <CodeBlock language={match[1]}>{children}</CodeBlock>;
+                        }
+                        if (!inline) {
+                          return <CodeBlock>{children}</CodeBlock>;
+                        }
+                        return (
+                          <code
+                            className="px-1.5 py-0.5 rounded-md bg-gray-100 dark:bg-white/10 text-[13px] font-mono text-amber-600 dark:text-amber-400"
+                            {...props}
+                          >
+                            {children}
+                          </code>
+                        );
+                      },
+                      p({ children }) {
+                        return <p className="mb-3 last:mb-0">{children}</p>;
+                      },
+                      ul({ children }) {
+                        return <ul className="list-disc pl-5 mb-3 space-y-1">{children}</ul>;
+                      },
+                      ol({ children }) {
+                        return <ol className="list-decimal pl-5 mb-3 space-y-1">{children}</ol>;
+                      },
+                      blockquote({ children }) {
+                        return (
+                          <blockquote className="border-l-2 border-amber-400/50 pl-4 my-3 text-gray-500 dark:text-gray-400 italic">
+                            {children}
+                          </blockquote>
+                        );
+                      },
+                      a({ href, children }) {
+                        return (
+                          <a href={href} target="_blank" rel="noopener noreferrer" className="text-amber-600 dark:text-amber-400 underline decoration-amber-400/30 hover:decoration-amber-400">
+                            {children}
+                          </a>
+                        );
+                      },
+                      strong({ children }) {
+                        return <strong className="font-semibold text-gray-900 dark:text-gray-100">{children}</strong>;
+                      },
+                    }}
+                  >
+                    {message.content || ' '}
+                  </ReactMarkdown>
+                  {isLast && (
+                    <span className="inline-block w-1.5 h-4 bg-amber-500 cursor-blink rounded-sm ml-0.5 align-middle" />
+                  )}
+                </div>
+                {!isLast && message.content && <MessageActions content={message.content} />}
+              </>
             )}
           </div>
         </div>
